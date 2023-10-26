@@ -13,19 +13,20 @@ app.config.from_object('config.Config')
 db.init_app(app)
 engine = create_engine(config.Config.SQLALCHEMY_DATABASE_URI)
 
-data_preparation_service = DataPreparationService(engine)
+preparation_service = DataPreparationService(engine)
 
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     selected_used = 'None'
-    usernames = data_preparation_service.get_usernames_to_drop_down()
+    usernames = preparation_service.get_usernames_as_array()
+    dic = preparation_service.bla()
 
     if request.method == 'POST':
         selected_used = request.form['user']
 
     if selected_used != 'None':
-        data_preparation_service.program_starts_for_user_and_day(selected_used, 5, 9, 2023)
+        preparation_service.program_starts_for_user_and_day(selected_used, 5, 9, 2023)
 
     # page_service.prepare_daily_plot(engine, selected_used, 5, 9, 2023)
     return render_template('index.html', img_path='static/img/daily_plot.png', users=usernames)

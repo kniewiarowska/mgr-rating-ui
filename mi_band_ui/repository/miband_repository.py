@@ -23,3 +23,13 @@ class MiBandRepository:
 
         params = {"user_name": user, "start": start, "end": end}
         return pd.read_sql(query, self.engine, params=params)
+
+    def read_list_of_dates_for_user(self, user):
+        query = text("SELECT DISTINCT unique_dates FROM"
+                     + " (SELECT DATE(CONVERT_TZ(FROM_UNIXTIME(timestamp), 'UTC', 'Europe/Warsaw')) AS unique_dates"
+                     + " FROM mi_band WHERE user_id = :username AND"
+                     + " DATE(CONVERT_TZ(FROM_UNIXTIME(timestamp), 'UTC', 'Europe/Warsaw'))"
+                     + " >= '2023-09-02') AS subquery;")
+
+        params = {"username": user}
+        return pd.read_sql(query, self.engine, params=params)

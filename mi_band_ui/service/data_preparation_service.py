@@ -15,17 +15,30 @@ class DataPreparationService:
         self.miBandRepository = MiBandRepository(self.engine)
         self.hourlyStatsRepository = HourlyStatsRepository(self.engine)
 
-    #TODO
+    # TODO
     # def prepare_data(self):
-        # get the list of user
+    # get the list of user
 
-        # for each user
-            # get the list of available dates
-            # check if data exists
-            # if not: generate data
+    # for each user
+    # get the list of available dates
+    # check if data exists in hourly statistic and previous day
+    # if not: generate data
 
-    #TODO
+    # TODO
     # display particular data - that is requested
+
+    def get_dates_for_all_users(self):
+        users = self.get_usernames_as_array()
+        dict_user_dates = {}
+        for user in users:
+            dict_user_dates[user] = self.find_list_of_dates_available_for_user(user)
+
+        return dict_user_dates
+
+    def find_list_of_dates_available_for_user(self, username):
+        # dates =
+        return self.miBandRepository.read_list_of_dates_for_user(username)
+        # return clean_up_data(dates)
 
     def program_starts_for_user_and_day(self, username, day, month, year):
         df = self.get_cleaned_mi_band_data_for_day_and_user(username, day, month, year)
@@ -48,6 +61,6 @@ class DataPreparationService:
                                                                                   date(year, month, day))
             self.hourlyStatsRepository.save_statistics(new_statistic)
 
-    def get_usernames_to_drop_down(self):
+    def get_usernames_as_array(self):
         users = self.userRepository.get_usernames()
         return clean_up_list(users)
