@@ -53,7 +53,7 @@ class HourlyStatistic(db.Model):
     user_id = Column(BigInteger, nullable=False)
 
     # Assuming 'User' is the related table with an 'id' field
-    user = relationship('User', foreign_keys=[user_id])
+    user = relationship('User', foreign_keys=[user_id], lazy="joined")
     image = Column(LargeBinary, nullable=True)
 
     __table_args__ = (

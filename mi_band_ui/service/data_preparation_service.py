@@ -29,7 +29,7 @@ class DataPreparationService:
 
                 exist = self.check_if_stats_calculated_for_day_and_user(_date[0], user_id)
                 if not exist:
-                    self.program_starts_for_user_and_day(user, int(_date[0].day), int(_date[0].month), int(_date[0].year))
+                    self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month), int(_date[0].year))
 
                     # image for the whole day
                     # hourly check for the last day
@@ -55,9 +55,10 @@ class DataPreparationService:
     def find_list_of_dates_available_for_user(self, username):
         return self.miBandRepository.read_list_of_dates_for_user(username)
 
-    def program_starts_for_user_and_day(self, user, day, month, year):
-        df = self.get_cleaned_mi_band_data_for_day_and_user(user.username, day, month, year)
-        self.calculate_statistic_and_plot_for_whole_day(df, day, month, year, user)
+    def program_starts_for_user_and_day(self, username, day, month, year):
+        df = self.get_cleaned_mi_band_data_for_day_and_user(username, day, month, year)
+        if len(df) != 0:
+            self.calculate_statistic_and_plot_for_whole_day(df, day, month, year, username)
 
     def get_cleaned_mi_band_data_for_day_and_user(self, username, day, month, year):
         start = calculate_start_date(day, month, year)
@@ -66,10 +67,11 @@ class DataPreparationService:
         df = self.miBandRepository.read_data_from_database_for_user_and_day(username, start, end)
         return clean_up_data(df)
 
-    def calculate_statistic_and_plot_for_whole_day(self, df, day, month, year, user):
+    def calculate_statistic_and_plot_for_whole_day(self, df, day, month, year, username):
         data = {x: y for x, y in df.groupby(df['hour'])}
         for hour_df in data.items():
             image = prepare_image(hour_df, day, month, year)
+            user = self.userRepository.read_user(username)
             new_statistic = statistics_calculator.prepare_statistic_from_one_hour(hour_df[1], user, image,
                                                                                   hour_df[0],
                                                                                   date(year, month, day))

@@ -1,5 +1,8 @@
 from datetime import datetime
 
+import numpy as np
+import pandas as pd
+
 
 def get_timestamp(day, month, year, hour, minute, seconds):
     date_with_time = datetime(year, month, day, hour, minute, seconds)
@@ -26,8 +29,11 @@ def clean_up_data(df):
     start_time = compare_hours_start('07:00', first)
     end_time = compare_hours_end('22:00', last)
 
-    start = df.index[df['time'] == start_time].tolist()[0]
-    end = df.index[df['time'] == end_time].tolist()[0]
+    if start_time > end_time:
+        return pd.DataFrame()
+
+    start = df.index[df['time'] >= start_time].tolist()[0]
+    end = np.searchsorted(df['time'], end_time, side="left")
 
     df_cleaned = df.iloc[start:end]
     df_cleaned = df_cleaned[df_cleaned['heart_rate'] != 255]
@@ -37,8 +43,8 @@ def clean_up_data(df):
 
 def compare_hours_start(start, first):
     time_format = "%H:%M"
-    first_time = datetime.strptime(start, time_format)
-    start_time = datetime.strptime(first, time_format)
+    first_time = datetime.strptime(first, time_format)
+    start_time = datetime.strptime(start, time_format)
 
     if start_time > first_time:
         return start_time.strftime("%H:%M")
@@ -46,12 +52,12 @@ def compare_hours_start(start, first):
         return first_time.strftime("%H:%M")
 
 
-def compare_hours_end(start, first):
+def compare_hours_end(end, last):
     time_format = "%H:%M"
-    first_time = datetime.strptime(start, time_format)
-    start_time = datetime.strptime(first, time_format)
+    last_time = datetime.strptime(last, time_format)
+    end_time = datetime.strptime(end, time_format)
 
-    if start_time < first_time:
-        return start_time.strftime("%H:%M")
+    if end_time < last_time:
+        return end_time.strftime("%H:%M")
     else:
-        return first_time.strftime("%H:%M")
+        return last_time.strftime("%H:%M")

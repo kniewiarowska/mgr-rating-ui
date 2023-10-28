@@ -61,7 +61,7 @@ def calculate_raw_intensity_mean(item):
     return item['raw_intensity'].mean()
 
 
-def prepare_statistic_from_one_hour(item, id, image_value, hour_value, date_value):
+def prepare_statistic_from_one_hour(item, user, image_value, hour_value, date_value):
     heart_rate_mean = calculate_heart_rate_mean(item)
     raw_intensity_mean = calculate_raw_intensity_mean(item)
 
@@ -88,7 +88,7 @@ def prepare_statistic_from_one_hour(item, id, image_value, hour_value, date_valu
                            raw_intensity_avg=float(raw_intensity_avg_value),
                            date=date_value,
                            time_of_day=time_of_day_value,
-                           user=id,
+                           user=user,
                            image=image_value)
 
 

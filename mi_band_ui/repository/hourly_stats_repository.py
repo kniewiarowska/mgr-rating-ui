@@ -1,16 +1,16 @@
 from sqlalchemy import text
-from sqlalchemy.orm import sessionmaker
+
+from mi_band_ui.datamodel.models import db
 
 
 class HourlyStatsRepository:
     def __init__(self, engine):
         self.engine = engine
+        self.session = db.session
 
     def save_statistics(self, new_statistic):
-        session = self.start_session()
-        session.add(new_statistic)
-        session.commit()
-        self.end_session(session)
+        self.session.add(new_statistic)
+        self.session.commit()
 
     def if_statistics_for_date_and_user_exist(self, user_id, date, hour=None):
         if hour is None:
@@ -33,9 +33,7 @@ class HourlyStatsRepository:
         )
 
         params = {"user_id": user_id, "date": date, "hour": hour}
-        session = self.start_session()
-        result = session.execute(query, params).fetchone()
-        self.end_session(session)
+        result = self.session.execute(query, params).fetchone()
         return result
 
     def get_statistics_for_date_and_user(self, user_id, date):
@@ -47,16 +45,5 @@ class HourlyStatsRepository:
         )
 
         params = {"user_id": user_id, "date": date}
-        session = self.start_session()
-        result = session.execute(query, params).fetchone()
-        self.end_session(session)
+        result = self.session.execute(query, params).fetchone()
         return result
-
-    def start_session(self):
-        Session = sessionmaker(bind=self.engine)
-        Session.expire_on_commit = False
-        session = Session()
-        return session
-
-    def end_session(self, session):
-        session.close()
