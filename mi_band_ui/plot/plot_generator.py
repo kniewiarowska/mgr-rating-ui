@@ -26,9 +26,8 @@ def prepare_image(df, day, month, year):
     return prepare_plot(df[1], day, month, year, df[0]).read()
 
 
-def prepare_plot_for_day(df, day, month, year, user):
-    image = prepare_image(df, day, month, year, "")
-
+def prepare_plot_for_day(df, day, month, year):
+    return prepare_image(df, day, month, year)
 
 
 def prepare_plt_title(day, month, year, hour):

@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 class MiBandRepository:
     def __init__(self, engine):
         self.engine = engine
-        self.Session = sessionmaker(bind=engine)
 
     def read_data_from_database_for_user_and_day(self, user, start, end):
         query = text("SELECT CAST(steps as SIGNED) as steps,"
@@ -29,7 +28,9 @@ class MiBandRepository:
                      + " (SELECT DATE(CONVERT_TZ(FROM_UNIXTIME(timestamp), 'UTC', 'Europe/Warsaw')) AS unique_dates"
                      + " FROM mi_band WHERE user_id = :username AND"
                      + " DATE(CONVERT_TZ(FROM_UNIXTIME(timestamp), 'UTC', 'Europe/Warsaw'))"
-                     + " >= '2023-09-02') AS subquery;")
+                     + " >= '2023-09-04') AS subquery;")
 
         params = {"username": user}
         return pd.read_sql(query, self.engine, params=params)
+
+

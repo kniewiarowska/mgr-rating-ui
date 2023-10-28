@@ -43,20 +43,20 @@ class HourlyStatistic(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     steps = Column(Integer, nullable=False)
-    heart_rate_avg = Column(Float, nullable=True)
-    max_heart = Column(Integer, nullable=True)
-    min_heart = Column(Float, nullable=True)
-    raw_intensity_avg = Column(Float, nullable=True)
-    time_of_day = Column(Integer, nullable=True)
-    date = Column(Date, nullable=True)
-    hour = Column(Integer, nullable=True)
-    user_id = Column(BigInteger, nullable=True)
+    heart_rate_avg = Column(Float, nullable=False)
+    max_heart = Column(Integer, nullable=False)
+    min_heart = Column(Float, nullable=False)
+    raw_intensity_avg = Column(Float, nullable=False)
+    time_of_day = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    hour = Column(Integer, nullable=False)
+    user_id = Column(BigInteger, nullable=False)
 
     # Assuming 'User' is the related table with an 'id' field
     user = relationship('User', foreign_keys=[user_id])
     image = Column(LargeBinary, nullable=True)
 
     __table_args__ = (
-        UniqueConstraint('hour', 'date', name='hourly_statistic_pk'),
+        UniqueConstraint('hour', 'date', 'user_id', name='hourly_statistic_user_id_fk'),
         ForeignKeyConstraint(['user_id'], ['user.id'], name='hourly_statistic_user_id_fk')
     )

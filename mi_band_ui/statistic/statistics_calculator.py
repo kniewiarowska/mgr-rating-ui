@@ -50,7 +50,11 @@ def calculate_raw_intensity(item, raw_intensity_mean):
 def calculate_heart_rate_mean(item):
     # remove wrong values
     heart_rate_data = item[((item['heart_rate'] > 39) & (item['heart_rate'] < 200))]
-    return heart_rate_data['heart_rate'].mean()
+    heart_rate_mean =  heart_rate_data['heart_rate'].mean()
+    if math.isnan(heart_rate_mean):
+        return 80.0
+    else:
+        return heart_rate_mean
 
 
 def calculate_raw_intensity_mean(item):

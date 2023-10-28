@@ -16,8 +16,23 @@ class DataPreparationService:
         self.hourlyStatsRepository = HourlyStatsRepository(self.engine)
 
     # TODO
-    # def prepare_data(self):
-    # get the list of user
+    def prepare_data(self):
+        dict_users_and_dates = self.get_dates_for_all_users()
+        for key in dict_users_and_dates:
+            user = self.userRepository.read_user(key)
+            user_id = user.id
+
+            dates = dict_users_and_dates[key]
+            dates = dates.values
+            for _date in dates:
+                hours = []
+
+                exist = self.check_if_stats_calculated_for_day_and_user(_date[0], user_id)
+                if not exist:
+                    self.program_starts_for_user_and_day(user, int(_date[0].day), int(_date[0].month), int(_date[0].year))
+
+                    # image for the whole day
+                    # hourly check for the last day
 
     # for each user
     # get the list of available dates
@@ -26,6 +41,8 @@ class DataPreparationService:
 
     # TODO
     # display particular data - that is requested
+    def check_if_stats_calculated_for_day_and_user(self, day, user_id):
+        return self.hourlyStatsRepository.if_statistics_for_date_and_user_exist(user_id, day)
 
     def get_dates_for_all_users(self):
         users = self.get_usernames_as_array()
@@ -36,13 +53,10 @@ class DataPreparationService:
         return dict_user_dates
 
     def find_list_of_dates_available_for_user(self, username):
-        # dates =
         return self.miBandRepository.read_list_of_dates_for_user(username)
-        # return clean_up_data(dates)
 
-    def program_starts_for_user_and_day(self, username, day, month, year):
-        df = self.get_cleaned_mi_band_data_for_day_and_user(username, day, month, year)
-        user = self.userRepository.read_user(username)
+    def program_starts_for_user_and_day(self, user, day, month, year):
+        df = self.get_cleaned_mi_band_data_for_day_and_user(user.username, day, month, year)
         self.calculate_statistic_and_plot_for_whole_day(df, day, month, year, user)
 
     def get_cleaned_mi_band_data_for_day_and_user(self, username, day, month, year):

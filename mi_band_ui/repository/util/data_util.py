@@ -20,10 +20,38 @@ def clean_up_list(result):
 
 
 def clean_up_data(df):
-    start = df.index[df['time'] == '07:00'].tolist()[0]
-    end = df.index[df['time'] == '22:00'].tolist()[0]
+    first = df['time'].iloc[0]
+    last = df['time'].iloc[-1]
+
+    start_time = compare_hours_start('07:00', first)
+    end_time = compare_hours_end('22:00', last)
+
+    start = df.index[df['time'] == start_time].tolist()[0]
+    end = df.index[df['time'] == end_time].tolist()[0]
 
     df_cleaned = df.iloc[start:end]
     df_cleaned = df_cleaned[df_cleaned['heart_rate'] != 255]
     df_cleaned = df_cleaned.reset_index()
     return df_cleaned
+
+
+def compare_hours_start(start, first):
+    time_format = "%H:%M"
+    first_time = datetime.strptime(start, time_format)
+    start_time = datetime.strptime(first, time_format)
+
+    if start_time > first_time:
+        return start_time.strftime("%H:%M")
+    else:
+        return first_time.strftime("%H:%M")
+
+
+def compare_hours_end(start, first):
+    time_format = "%H:%M"
+    first_time = datetime.strptime(start, time_format)
+    start_time = datetime.strptime(first, time_format)
+
+    if start_time < first_time:
+        return start_time.strftime("%H:%M")
+    else:
+        return first_time.strftime("%H:%M")

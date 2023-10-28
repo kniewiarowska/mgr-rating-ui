@@ -20,7 +20,7 @@ preparation_service = DataPreparationService(engine)
 def index():
     selected_used = 'None'
     usernames = preparation_service.get_usernames_as_array()
-    dic = preparation_service.bla()
+    preparation_service.prepare_data()
 
     if request.method == 'POST':
         selected_used = request.form['user']
