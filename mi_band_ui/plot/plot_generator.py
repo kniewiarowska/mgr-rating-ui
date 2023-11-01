@@ -3,7 +3,7 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 
 
-def prepare_plot(df_cleaned, day, month, year, hour):
+def prepare_plot(df_cleaned, day, month, year, hour=None):
     heart_rate = df_cleaned['heart_rate']
     x1 = df_cleaned['time']
     steps = df_cleaned['steps']
@@ -27,7 +27,7 @@ def prepare_image(df, day, month, year):
 
 
 def prepare_plot_for_day(df, day, month, year):
-    return prepare_image(df, day, month, year)
+    return prepare_plot(df, day, month, year).read()
 
 
 def prepare_plt_title(day, month, year, hour):

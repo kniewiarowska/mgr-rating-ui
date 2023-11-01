@@ -1,6 +1,8 @@
 from datetime import date
 
-from mi_band_ui.plot.plot_generator import prepare_image
+from mi_band_ui.datamodel.models import Daily
+from mi_band_ui.plot.plot_generator import prepare_image, prepare_plot_for_day
+from mi_band_ui.repository.daily_repository import DailyRepository
 from mi_band_ui.repository.hourly_stats_repository import HourlyStatsRepository
 from mi_band_ui.repository.miband_repository import MiBandRepository
 from mi_band_ui.repository.user_repository import UserRepository
@@ -14,6 +16,7 @@ class DataPreparationService:
         self.userRepository = UserRepository(self.engine)
         self.miBandRepository = MiBandRepository(self.engine)
         self.hourlyStatsRepository = HourlyStatsRepository(self.engine)
+        self.daily_repository = DailyRepository(self.engine)
 
     # TODO
     def prepare_data(self):
@@ -25,11 +28,10 @@ class DataPreparationService:
             dates = dict_users_and_dates[key]
             dates = dates.values
             for _date in dates:
-                hours = []
-
                 exist = self.check_if_stats_calculated_for_day_and_user(_date[0], user_id)
                 if not exist:
-                    self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month), int(_date[0].year))
+                    self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month),
+                                                         int(_date[0].year))
 
                     # image for the whole day
                     # hourly check for the last day
@@ -53,12 +55,22 @@ class DataPreparationService:
         return dict_user_dates
 
     def find_list_of_dates_available_for_user(self, username):
+        #TODO add logic to check the end of last day - not to miss any data
         return self.miBandRepository.read_list_of_dates_for_user(username)
 
     def program_starts_for_user_and_day(self, username, day, month, year):
         df = self.get_cleaned_mi_band_data_for_day_and_user(username, day, month, year)
         if len(df) != 0:
+            self.calculate_daily_plot(df, day, month, year, username)
             self.calculate_statistic_and_plot_for_whole_day(df, day, month, year, username)
+
+    def calculate_daily_plot(self, df, day, month, year, username):
+        buffer = prepare_plot_for_day(df, day, month, year)
+        date_value = date(year, month, day)
+        user = self.userRepository.read_user(username)
+        daily = Daily(date=date_value, user=user, plot=buffer)
+
+        self.daily_repository.save_daily(daily)
 
     def get_cleaned_mi_band_data_for_day_and_user(self, username, day, month, year):
         start = calculate_start_date(day, month, year)

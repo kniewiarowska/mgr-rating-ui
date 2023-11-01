@@ -60,3 +60,19 @@ class HourlyStatistic(db.Model):
         UniqueConstraint('hour', 'date', 'user_id', name='hourly_statistic_user_id_fk'),
         ForeignKeyConstraint(['user_id'], ['user.id'], name='hourly_statistic_user_id_fk')
     )
+
+
+class Daily(db.Model):
+    __tablename__ = 'daily'
+
+    date = Column(Date, nullable=False)
+    plot = Column(LargeBinary, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, nullable=False)
+
+    # Assuming 'User' is the related table with an 'id' field
+    user = relationship('User', foreign_keys=[user_id], lazy="joined")
+
+    # Define a unique constraint on the id column
+    __table_args__ = (UniqueConstraint('id', name='daily_id_uindex'),
+                      ForeignKeyConstraint(['user_id'], ['user.id'], name='daily_user_id_fk'))

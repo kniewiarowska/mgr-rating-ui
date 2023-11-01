@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-from mi_band_ui.datamodel.models import db
+from mi_band_ui.datamodel.models import db, HourlyStatistic
 
 
 class HourlyStatsRepository:
@@ -47,3 +47,12 @@ class HourlyStatsRepository:
         params = {"user_id": user_id, "date": date}
         result = self.session.execute(query, params).fetchone()
         return result
+
+    def get_hourly_statistic_for_date_and_hour(self, date, hour):
+        query = self.session.query(HourlyStatistic).filter(HourlyStatistic.date == date, HourlyStatistic.hour == hour)
+        return query.first()
+
+    def get_all_hours_for_one_day(self, user_id, date):
+        query = self.session.query(HourlyStatistic).filter(HourlyStatistic.date == date,
+                                                                HourlyStatistic.user_id == user_id)
+        return query.all()
