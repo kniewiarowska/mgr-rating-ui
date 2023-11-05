@@ -1,7 +1,9 @@
 import base64
 from datetime import datetime
+from sqlite3 import IntegrityError
 
 import matplotlib
+import sqlalchemy
 from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
 
@@ -43,7 +45,7 @@ def start():
 @app.route('/panel', methods=['GET'])
 def panel():
     username = request.args.get('user')
-    active_hour = request.args.get('active_hour', default=None)
+    active_hour = request.args.get('active_hour', default=None) #TODO delete
     date = request.args.get('date')
     chosen_date = datetime.strptime(date, "%Y-%m-%d")
     judge = request.args.get('judge')

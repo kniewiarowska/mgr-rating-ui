@@ -1,4 +1,5 @@
 import base64
+import logging
 
 from flask import render_template
 
@@ -36,7 +37,11 @@ class PagePreparationService:
         hourly_statistics = self.hourlyStatsRepository.get_hourly_statistic_for_date_and_hour_and_user_id(active_hour,
                                                                                                           date, user.id)
         rate = Rate(judge=judge_name, hourly_stats_id=hourly_statistics.id, rate=rate_number)
-        self.rateRepository.save_rate(rate)
+        check_rate = self.rateRepository.get_rate(judge_name, hourly_statistics.id)
+        if check_rate is None:
+            self.rateRepository.save_rate(rate)
+        else:
+            print("Already judged")
 
     def split_list_by_value(self, lst, value):
         sublists = []
