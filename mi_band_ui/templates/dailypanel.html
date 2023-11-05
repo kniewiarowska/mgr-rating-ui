@@ -40,15 +40,17 @@
         <img src="data:;base64,{{ hourly_plot }}"/>
     </div>
 
-
-
  <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=0, judge=judge, last=last)}}" method=post>
-     <input id='next_hutch' type=submit value="OK!" name='action'>
+     <input id='next_hutch' type=submit value="OK" name='action'>
+ </form>
+ <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=1, judge=judge, last=last)}}" method=post>
+     <input id='next_hutch2' type=submit value="ANOMALY" name='action'>
+ </form>
+  <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=2, judge=judge, last=last)}}" method=post>
+     <input id='next_hutch3' type=submit value="MESSY" name='action'>
  </form>
 
-    <button id="anomaly" type="submit">ANOMALY</button>
-    <button id="messy" type="submit">MESSY</button>
-
 </div>
+
 </body>
 </html>

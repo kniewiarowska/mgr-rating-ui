@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<head>
+    <title>Data Table</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr class="tr">
+                <th>Date</th>
+                <th>Username</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows_to_judge %}
+                <tr class="tr">
+                    <td class="td_a">{{row.date}}</td>
+                    <td class="td_a">{{row.username}}</td>
+                    <td>
+                        <span class="material-symbols-outlined clickable-span" data-user="{{ row.username }}" data-date="{{ row.date }}">arrow_forward</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in judged %}
+                <tr class="tr">
+                    <td class="td_a">{{row.date}}</td>
+                    <td class="td_a">{{row.username}}</td>
+                    <td><span class="material-symbols-outlined">check_circle</span></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        // JavaScript code to add an action when the span is clicked
+        const clickableSpans = document.querySelectorAll('.clickable-span');
+        clickableSpans.forEach(span => {
+            span.style.cursor = 'pointer';  // Change the cursor to a hand pointer
+            span.style.textDecoration = 'underline';  // Underline the text
+            span.style.color = 'blue';  // Change the color to blue
+            span.onclick = function() {
+                // Perform the action when the span is clicked
+                const user = span.getAttribute('data-user');
+                const date = span.getAttribute('data-date');
+                window.location.href = `/panel?user=${user}&date=${date}&judge={{ judge }}`;
+            };
+        });
+    </script>
+</body>
+</html>

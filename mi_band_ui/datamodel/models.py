@@ -76,3 +76,20 @@ class Daily(db.Model):
     # Define a unique constraint on the id column
     __table_args__ = (UniqueConstraint('id', name='daily_id_uindex'),
                       ForeignKeyConstraint(['user_id'], ['user.id'], name='daily_user_id_fk'))
+
+
+class Rate(db.Model):
+    __tablename__ = 'rate'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    judge = Column(String(50), nullable=False)
+    hourly_stats_id = Column(Integer, nullable=False)
+    rate = Column(Integer, nullable=True)
+
+    hourly_statistic = relationship('HourlyStatistic', foreign_keys=[hourly_stats_id], lazy="joined")
+
+    # Create a unique constraint for (judge, hourly_stats_id)
+    __table_args__ = (UniqueConstraint('judge', 'hourly_stats_id', name='rate_pk'),
+                      ForeignKeyConstraint(['hourly_stats_id'], ['hourly_statistic.id'],
+                                           name='rate_hourly_statistic_id_fk'))
+
