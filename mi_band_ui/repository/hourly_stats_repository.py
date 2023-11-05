@@ -86,3 +86,13 @@ class HourlyStatsRepository:
         result = self.session.execute(query, params)
 
         return result.fetchall()
+
+    def get_rated_statistics_daily_page(self, specifed_judge, date, user_id):
+        query = text(
+            "SELECT * FROM hourly_statistic hs LEFT JOIN rate r ON hs.id = r.hourly_stats_id AND " +
+            "r.judge = :specifed_judge WHERE r.id IS NOT NULL and hs.date = :date_value and hs.user_id = :user_id")
+
+        params = {"specifed_judge": specifed_judge, 'date_value': date, 'user_id': user_id}
+        result = self.session.execute(query, params)
+
+        return result.fetchall()

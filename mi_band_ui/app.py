@@ -49,59 +49,30 @@ def panel():
     judge = request.args.get('judge')
     user = page_service.get_user(username)
 
-    # hourly_stats = page_service.get_dates_without_rate_daily_page(judge, chosen_date, user.id)
-    hourly_stats = page_service.get_hourly_stats_for_user_and_date(user.id, chosen_date)
-    #hourly_stats_not_rated = page_service.get_dates_without_rate_daily_page(judge, chosen_date, user.id)
-
-    available_hours = []  # TODO read only hours that are not rated
-    rated_hours = []
-    for stat in hourly_stats:
-        hour = stat.hour
-        available_hours.append(hour)
-
-
+    hourly_stats_not_rated = page_service.get_dates_without_rate_daily_page(judge, chosen_date, user.id)
+    hourly_stats_rated = page_service.get_dates_with_rate_daily_page(judge, chosen_date, user.id)
     daily_plot = page_service.get_daily_plot_for_user_and_date(user.id, chosen_date)
     daily_image = base64.b64encode(daily_plot).decode("utf-8")
 
-    if (active_hour is None) & (len(available_hours) > 0):
+    # not judged yet
+    if len(hourly_stats_rated) == 0:
+        # first run
+        if len(hourly_stats_not_rated) >= 1:  #  sa dane do oceny
+            return page_service.make_page_for_first_run(hourly_stats_not_rated, hourly_stats_rated, judge, username,
+                                                 chosen_date, daily_image)
+        else:
+            return page_service.make_last_page(hourly_stats_not_rated, hourly_stats_rated, judge, username,
+                                        chosen_date,
+                                        daily_image)
 
-        hourly_plot = hourly_stats[0].image
-        hourly_image = base64.b64encode(hourly_plot).decode("utf-8")
+    elif (len(hourly_stats_rated) > 0) & (len(hourly_stats_not_rated) >= 2):
+        return page_service.make_page_for_rated_and_to_rate(hourly_stats_not_rated, hourly_stats_rated, judge, username,
+                                                     chosen_date, daily_image)
 
-        active = available_hours[0]
-        left = available_hours[1:]
-
-        last = False
-        if len(available_hours) == 0:
-            last = True
-
-        return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
-                               active_hours=[active], hours_left=left, daily_plot=daily_image, hourly_plot=hourly_image,
-                               last=last)
-
-    elif active_hour is not None:
-        # TODO check the last one
-        last = False
-        size = len(available_hours) - 1
-        index = available_hours.index(int(active_hour)) + 1
-        if index == size:
-            last = True
-        hourly_plot = hourly_stats[index].image
-        hourly_image = base64.b64encode(hourly_plot).decode("utf-8")
-
-        completed = available_hours[0:index]
-        active = [available_hours[index]]
-
-        if index == size:
-            return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
-                                   completed_hours=completed,
-                                   active_hours=active, daily_plot=daily_image, hourly_plot=hourly_image, last=last)
-
-        left = available_hours[(index + 1):]
-        return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
-                               completed_hours=completed,
-                               active_hours=active,
-                               hours_left=left, daily_plot=daily_image, hourly_plot=hourly_image, last=last)
+    elif len(hourly_stats_not_rated) == 1:
+        return page_service.make_last_page(hourly_stats_not_rated, hourly_stats_rated, judge, username,
+                                    chosen_date,
+                                    daily_image)
     else:
         return redirect(url_for('judge', judge=judge))
 
