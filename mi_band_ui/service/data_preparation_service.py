@@ -33,14 +33,6 @@ class DataPreparationService:
                     self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month),
                                                          int(_date[0].year))
 
-                    # image for the whole day
-                    # hourly check for the last day
-
-    # for each user
-    # get the list of available dates
-    # check if data exists in hourly statistic and previous day
-    # if not: generate data
-
     # TODO
     # display particular data - that is requested
     def check_if_stats_calculated_for_day_and_user(self, day, user_id):

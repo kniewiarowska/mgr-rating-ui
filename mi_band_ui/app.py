@@ -1,15 +1,15 @@
+import atexit
 import base64
 from datetime import datetime
-from sqlite3 import IntegrityError
 
 import matplotlib
-import sqlalchemy
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
+from apscheduler.triggers.interval import IntervalTrigger
 
 import config
 from mi_band_ui.datamodel.models import db
-from mi_band_ui.repository.util.data_util import clean_up_list
 from mi_band_ui.service.data_preparation_service import DataPreparationService
 from mi_band_ui.service.judge_page import JudgePreparationService
 from mi_band_ui.service.page_service import PagePreparationService
@@ -25,6 +25,21 @@ preparation_service = DataPreparationService(engine)
 page_service = PagePreparationService(engine)
 start_page_service = StartPageService(engine)
 judge_page = JudgePreparationService(engine)
+
+
+def prepare():
+    with app.app_context():
+        preparation_service2 = DataPreparationService(engine)
+        preparation_service2.prepare_data()
+        print('JOB DONE')
+        print(datetime.now())
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=prepare, trigger="interval", seconds=3600)
+scheduler.start()
+
+atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -45,7 +60,7 @@ def start():
 @app.route('/panel', methods=['GET'])
 def panel():
     username = request.args.get('user')
-    active_hour = request.args.get('active_hour', default=None) #TODO delete
+    active_hour = request.args.get('active_hour', default=None)  # TODO delete
     date = request.args.get('date')
     chosen_date = datetime.strptime(date, "%Y-%m-%d")
     judge = request.args.get('judge')
@@ -59,22 +74,22 @@ def panel():
     # not judged yet
     if len(hourly_stats_rated) == 0:
         # first run
-        if len(hourly_stats_not_rated) >= 1:  #  sa dane do oceny
+        if len(hourly_stats_not_rated) >= 1:  # sa dane do oceny
             return page_service.make_page_for_first_run(hourly_stats_not_rated, hourly_stats_rated, judge, username,
-                                                 chosen_date, daily_image)
+                                                        chosen_date, daily_image)
         else:
             return page_service.make_last_page(hourly_stats_not_rated, hourly_stats_rated, judge, username,
-                                        chosen_date,
-                                        daily_image)
+                                               chosen_date,
+                                               daily_image)
 
     elif (len(hourly_stats_rated) > 0) & (len(hourly_stats_not_rated) >= 2):
         return page_service.make_page_for_rated_and_to_rate(hourly_stats_not_rated, hourly_stats_rated, judge, username,
-                                                     chosen_date, daily_image)
+                                                            chosen_date, daily_image)
 
     elif len(hourly_stats_not_rated) == 1:
         return page_service.make_last_page(hourly_stats_not_rated, hourly_stats_rated, judge, username,
-                                    chosen_date,
-                                    daily_image)
+                                           chosen_date,
+                                           daily_image)
     else:
         return redirect(url_for('judge', judge=judge))
 
@@ -108,4 +123,3 @@ def rate():
 
 if __name__ == '__main__':
     app.run()
-    preparation_service.prepare_data()
