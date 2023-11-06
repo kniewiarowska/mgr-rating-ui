@@ -6,20 +6,6 @@
 </head>
 <body>
 
-<!-- Dropdown -->
-<div class="form-group">
-<!--    TODO CHANGE CALLING THAT PAGE-->
-    <form method="post" action="{{ url_for('bla2', user=user, date=date, judge=judge)}}">
-        <label for="user">Select user:</label>
-        <select id="user" name="user">
-            <option value="">Select user</option>
-            {% for user in users %}
-            <option value="{{ user }}">{{ user }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Go">
-    </form>
-</div>
 
 </body>
 </html>

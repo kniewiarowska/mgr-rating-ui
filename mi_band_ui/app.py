@@ -35,20 +35,17 @@ def prepare():
         print(datetime.now())
 
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=prepare, trigger="interval", seconds=3600)
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(func=prepare, trigger="interval", seconds=60)
+# scheduler.start()
 
-atexit.register(lambda: scheduler.shutdown())
+#atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    usernames = preparation_service.get_usernames_as_array()
-    if request.method == 'POST':
-        selected_used = request.form['user']
-
-    return render_template('index.html', users=usernames)
+    preparation_service.prepare_data()
+    return render_template('index.html')
 
 
 @app.route('/', methods=['GET'])

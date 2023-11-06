@@ -27,14 +27,17 @@ class DataPreparationService:
 
             dates = dict_users_and_dates[key]
             dates = dates.values
+            last = dates[-1]
             for _date in dates:
                 exist = self.check_if_stats_calculated_for_day_and_user(_date[0], user_id)
                 if not exist:
                     self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month),
                                                          int(_date[0].year))
+                if last == _date:
+                    self.program_starts_for_user_and_day_for_last_day_hourly(user.username, int(_date[0].day), int(_date[0].month),
+                                                         int(_date[0].year))
 
-    # TODO
-    # display particular data - that is requested
+
     def check_if_stats_calculated_for_day_and_user(self, day, user_id):
         return self.hourlyStatsRepository.if_statistics_for_date_and_user_exist(user_id, day)
 
@@ -47,14 +50,18 @@ class DataPreparationService:
         return dict_user_dates
 
     def find_list_of_dates_available_for_user(self, username):
-        #TODO add logic to check the end of last day - not to miss any data
         return self.miBandRepository.read_list_of_dates_for_user(username)
 
     def program_starts_for_user_and_day(self, username, day, month, year):
         df = self.get_cleaned_mi_band_data_for_day_and_user(username, day, month, year)
         if len(df) != 0:
-            self.calculate_daily_plot(df, day, month, year, username)
             self.calculate_statistic_and_plot_for_whole_day(df, day, month, year, username)
+            self.calculate_daily_plot(df, day, month, year, username)
+
+    def program_starts_for_user_and_day_for_last_day_hourly(self, username, day, month, year):
+        df = self.get_cleaned_mi_band_data_for_day_and_user(username, day, month, year)
+        if len(df) != 0:
+            self.calculate_statistic_and_plot_for_whole_day_with_check(df, day, month, year, username)
 
     def calculate_daily_plot(self, df, day, month, year, username):
         buffer = prepare_plot_for_day(df, day, month, year)
@@ -80,6 +87,19 @@ class DataPreparationService:
                                                                                   hour_df[0],
                                                                                   date(year, month, day))
             self.hourlyStatsRepository.save_statistics(new_statistic)
+
+    def calculate_statistic_and_plot_for_whole_day_with_check(self, df, day, month, year, username):
+        data = {x: y for x, y in df.groupby(df['hour'])}
+        user = self.userRepository.read_user(username)
+        for hour_df in data.items():
+            exist = self.hourlyStatsRepository.if_statistics_for_date_and_user_exist(user.id, date(year, month, day), hour_df[0])
+            image = prepare_image(hour_df, day, month, year)
+            new_statistic = statistics_calculator.prepare_statistic_from_one_hour(hour_df[1], user, image,
+                                                                                  hour_df[0], date(year, month, day))
+            if not exist:
+                self.hourlyStatsRepository.save_statistics(new_statistic)
+            else:
+                self.hourlyStatsRepository.update_hourly_stats(new_statistic, user.id, date(year, month, day), hour_df[0])
 
     def get_usernames_as_array(self):
         users = self.userRepository.get_usernames()
