@@ -75,9 +75,12 @@ class PagePreparationService:
         hourly_image = base64.b64encode(hourly_plot).decode("utf-8")
         active = hours_not_rated[0]
 
+        date_to_print = str(chosen_date).split(' ')[0]
+
         if len(hours_not_rated) == 1:  # jezeli tylko jeden rekord - zakoncz i nie ustawiaj tabli left i completed
 
             return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
+                                   date_to_print=date_to_print,
                                    active_hours=[active], daily_plot=daily_image,
                                    hourly_plot=hourly_image,
                                    last=True)
@@ -85,6 +88,7 @@ class PagePreparationService:
         else:  # jezeli wiecej niz jeden rekord zostal
             left = hours_not_rated[1:]
             return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
+                                   date_to_print=date_to_print,
                                    active_hours=[active], hour=active, hours_left=left, daily_plot=daily_image,
                                    hourly_plot=hourly_image,
                                    last=False)
@@ -107,8 +111,10 @@ class PagePreparationService:
         active = hours_not_rated[0]
         left = hours_not_rated[1:]
         completed = hours_rated
+        date_to_print = str(chosen_date).split(' ')[0]
 
         return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
+                               date_to_print=date_to_print,
                                active_hours=[active], hour=active, hours_left=left, completed_hours=completed,
                                daily_plot=daily_image,
                                hourly_plot=hourly_image,
@@ -132,7 +138,8 @@ class PagePreparationService:
         active = hours_not_rated[0]
         completed = hours_rated
 
-        return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
+        date_to_print = str(chosen_date).split(' ')[0]
+        return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date, date_to_print=date_to_print,
                                active_hours=[active], hour=active, completed_hours=completed,
                                daily_plot=daily_image,
                                hourly_plot=hourly_image,

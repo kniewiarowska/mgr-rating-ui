@@ -26,7 +26,7 @@
 .down {
     display: flex;
     margin:auto;
-    padding: 20px;
+
     align-items: center;
 }
 
@@ -38,18 +38,51 @@
     margin:auto;
 }
 
-.submit {
+.submitok {
    cursor: pointer;
-   color: #111;
    font-family: "Trebuchet MS", sans-serif;
    font-size: 20px;
-   border-style: none;
    background-color: #FFFFFF;
+   border-radius: 20px;
+   border: 2px solid #4CAF50;
+   padding 5px;
  }
 
- .submit:hover {
+ .submitok:hover {
   background-color:#4CAF50;
   color: white;
   border-radius: 20px;
-  padding: 10px;
 }
+
+.submitan {
+   cursor: pointer;
+   font-family: "Trebuchet MS", sans-serif;
+   font-size: 20px;
+   background-color: #FFFFFF;
+   border-radius: 20px;
+   border: 2px solid #F21A1A;
+   padding 5px;
+ }
+
+ .submitan:hover {
+  background-color:#F21A1A;
+  color: white;
+  border-radius: 20px;
+}
+
+
+.submitme {
+   cursor: pointer;
+   font-family: "Trebuchet MS", sans-serif;
+   font-size: 20px;
+   background-color: #FFFFFF;
+   border-radius: 20px;
+   border: 2px solid #212121;
+   padding 5px;
+ }
+
+ .submitme:hover {
+  color: white;
+  background-color: #212121;
+  border-radius: 20px;
+  }

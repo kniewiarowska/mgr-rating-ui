@@ -1,3 +1,4 @@
+import calendar
 from io import BytesIO
 
 import matplotlib.pyplot as plt
@@ -9,12 +10,12 @@ def prepare_plot(df_cleaned, day, month, year, hour=None):
     steps = df_cleaned['steps']
 
     fig, ax1 = plt.subplots()
-    ax1.set_ylabel('Steps', fontsize=10)
+    ax1.set_ylabel('Steps', fontsize=10, color='r')
     ax1.set_xlabel('Time', fontsize=10)
     ax1.bar(x1, height=steps, color='r')
 
     ax2 = ax1.twinx()
-    ax2.set_ylabel('Heart rate', fontsize=10)
+    ax2.set_ylabel('Heart rate', fontsize=10, color='b')
     ax2.plot(x1, heart_rate, color='b')
 
     plt.xticks(x1[::80], rotation='vertical')
@@ -31,8 +32,20 @@ def prepare_plot_for_day(df, day, month, year):
 
 
 def prepare_plt_title(day, month, year, hour):
-    return str(day) + " " + str(month) + '' + str(year) + '' + str(hour)
+    if hour is None:
+        return str(day) + " " + number_to_month(month) + ' ' + str(year)
+    else:
+        return str(hour) + ':00-' + str(hour+1) + ':00'
 
+
+def number_to_month(month_number):
+    # Check if the month number is valid (between 1 and 12)
+    if 1 <= month_number <= 12:
+        # Use the calendar module to get the month name
+        month_name = calendar.month_name[month_number]
+        return month_name
+    else:
+        return "Invalid month number"
 
 def save_matplotlib_as_bytes_io(plot):
     buffer = BytesIO()

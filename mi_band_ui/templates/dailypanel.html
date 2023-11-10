@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='image.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='daily_panel.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='progress-bar.css') }}">
 
 <body>
@@ -33,17 +33,17 @@
 
 <div class="down">
     <div class="title">
-        Data for {{user}} from {{date}}
+        Data for {{user}} from {{date_to_print}}
     </div>
     <div class="buttons">
         <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=0, judge=judge, last=last)}}" method=post>
-            <input class='submit' type=submit value="OK" name='action'>
+            <input class='submitok' type=submit value="OK" name='action'>
         </form>
         <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=1, judge=judge, last=last)}}" method=post>
-            <input class='submit' type=submit value="ANOMALY" name='action'>
+            <input class='submitan' type=submit value="ANOMALY" name='action'>
         </form>
         <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=2, judge=judge, last=last)}}" method=post>
-            <input class='submit' type=submit value="MESSY" name='action'>
+            <input class='submitme' type=submit value="MESSY" name='action'>
         </form>
     </div>
 </div>

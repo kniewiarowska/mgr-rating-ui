@@ -57,7 +57,6 @@ def start():
 @app.route('/panel', methods=['GET'])
 def panel():
     username = request.args.get('user')
-    active_hour = request.args.get('active_hour', default=None)  # TODO delete
     date = request.args.get('date')
     chosen_date = datetime.strptime(date, "%Y-%m-%d")
     judge = request.args.get('judge')
@@ -97,7 +96,7 @@ def judge():
     if specified_judge == '':
         specified_judge = request.args.get('custom_option')
     stats_to_judge = judge_page.get_dates_without_rate(specified_judge)
-    return render_template('panel.html', judge=specified_judge, rows_to_judge=stats_to_judge)
+    return render_template('list_panel.html', judge=specified_judge, rows_to_judge=stats_to_judge)
 
 
 @app.route('/rate', methods=['POST'])
