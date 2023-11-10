@@ -1,9 +1,55 @@
  .image-container {
-    display: flex;
+     margin:auto;
+     justify-content: space-around;
+     display: flex;
+     width: 80%;
+     height:400px;
 }
 
 .image-container img {
-    width: auto; /* Maintain the aspect ratio */
-    height: auto; /* Set the height as needed */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     margin-right: 10px; /* Add some margin for spacing */
+}
+
+.title {
+    padding: 10px;
+    font-family: "Trebuchet MS", sans-serif;
+    color: #212121;
+    width: 40%;
+    margin: auto;
+    font-size: 20px;
+
+}
+
+.down {
+    display: flex;
+    margin:auto;
+    padding: 20px;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+    width: 60%;
+    justify-content: space-around;
+    align-items: center;
+    margin:auto;
+}
+
+.submit {
+   cursor: pointer;
+   color: #111;
+   font-family: "Trebuchet MS", sans-serif;
+   font-size: 20px;
+   border-style: none;
+   background-color: #FFFFFF;
+ }
+
+ .submit:hover {
+  background-color:#4CAF50;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
 }

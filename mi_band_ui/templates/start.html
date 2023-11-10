@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='start.css') }}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <div class="form-group">
-    <form action="/judge" method="GET">
-        <label for="jugde">Select judge:</label>
-        <select id="judge" name="judge">
-            <option value="">Select judge</option>
-            {% for judge in judges %}
-            <option value="{{ judge }}">{{ judge }}</option>
-            {% endfor %}
-        </select>
-      <input type="text" id="custom-option" name="custom_option" placeholder="Enter a custom option">
-      <button type="submit">Submit</button>
-    </form>
-
-
+<h1>HSense</h1>
+<div class="main">
+        <form class='f' action="/judge" method="GET">
+<!--            <h1 class="title">HSense</h1>-->
+                <select id="judge" name="judge">
+                    <option value="">Select judge</option>
+                    {% for judge in judges %}
+                    <option value="{{ judge }}">{{ judge }}</option>
+                    {% endfor %}
+                </select>
+                <label class="text_judge">or</label>
+                <input class="judge_text_input" type="text" id="custom-option" name="custom_option"
+                       placeholder="Enter a custom option">
+            <button class='submit' type="submit">Submit</button>
+        </form>
 </div>
 </body>
 </html>

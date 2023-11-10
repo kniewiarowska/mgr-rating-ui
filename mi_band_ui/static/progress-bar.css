@@ -1,9 +1,12 @@
 .stepper-wrapper {
-  margin-top: auto;
+  margin: auto;
+  margin-top: 30px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  font-family: "Trebuchet MS", sans-serif;
 }
+
 .stepper-item {
   position: relative;
   display: flex;
@@ -12,11 +15,12 @@
   flex: 1;
 
   @media (max-width: 768px) {
-    font-size: 12px;
+    font-size: 6px;
   }
 }
 
 .stepper-item::before {
+
   position: absolute;
   content: "";
   border-bottom: 2px solid #ccc;
@@ -24,6 +28,7 @@
   top: 20px;
   left: -50%;
   z-index: 2;
+
 }
 
 .stepper-item::after {
@@ -34,6 +39,7 @@
   top: 20px;
   left: 50%;
   z-index: 2;
+
 }
 
 .stepper-item .step-counter {

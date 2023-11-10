@@ -1,0 +1,102 @@
+h1 {
+margin-left:20px;
+margin-top:20px;
+font-family: "Trebuchet MS", sans-serif;
+color:#4CAF50;
+}
+
+
+.main {
+   background-color: #FFFFFF;
+   width: 600px;
+   height: 300px;
+   margin: 7em auto;
+   border-radius: 20px;
+   box-shadow: 1px 4px 8px 1px rgba(0,0,0,0.2);
+}
+
+.title {
+  padding-top: 40px;
+  padding: 20px;
+  color: #212121;
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 40px;
+
+}
+
+.submit {
+   cursor: pointer;
+   color: #111;
+   padding-left: 40px;
+   padding-right: 40px;
+   padding-bottom: 10px;
+   padding-top: 10px;
+   font-family: "Trebuchet MS", sans-serif;
+   margin-left: 70%;
+   font-size: 20px;
+   border-style: none;
+   background-color: #FFFFFF;
+   }
+
+.submit:hover {
+  background-color:#4CAF50;
+  color: white;
+  border-radius: 20px;
+}
+
+label, select, input {
+  display: block;
+  margin-bottom: 10px; /* Adjust the margin as needed */
+}
+
+.judge_text_input {
+      width: 75%;
+      color: #111;
+      font-weight: 700;
+      font-size: 20px;
+      background: rgba(136, 126, 126, 0.04);
+      padding: 10px 10px;
+      border-radius: 20px;
+      outline: none;
+      box-sizing: border-box;
+      border: 2px solid rgba(0, 0, 0, 0.02);
+      margin-left: 70px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-family: "Trebuchet MS", sans-serif;
+}
+
+.text_judge {
+      width: 100%;
+      color: #111;
+      font-weight: 700;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-family: "Trebuchet MS", sans-serif;
+      margin-top: 20px;
+}
+
+select {
+     width: 75%;
+     color: #111;
+     font-weight: 700;
+     font-size: 20px;
+     background: rgba(136, 126, 126, 0.04);
+     padding: 10px 10px;
+     border-radius: 20px;
+     outline: none;
+     box-sizing: border-box;
+     border: 2px solid rgba(0, 0, 0, 0.02);
+     text-align: center;
+     margin-bottom: 20px;
+     font-family: "Trebuchet MS", sans-serif;
+     margin-top: 20px;
+     margin-left: 70px;
+
+}
+
+.f {
+  padding-top: 80px;
+  padding: 20px;
+}

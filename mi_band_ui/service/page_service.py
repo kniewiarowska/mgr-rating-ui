@@ -85,7 +85,7 @@ class PagePreparationService:
         else:  # jezeli wiecej niz jeden rekord zostal
             left = hours_not_rated[1:]
             return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
-                                   active_hours=[active], hours_left=left, daily_plot=daily_image,
+                                   active_hours=[active], hour=active, hours_left=left, daily_plot=daily_image,
                                    hourly_plot=hourly_image,
                                    last=False)
 
@@ -109,7 +109,7 @@ class PagePreparationService:
         completed = hours_rated
 
         return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
-                               active_hours=[active], hours_left=left, completed_hours=completed,
+                               active_hours=[active], hour=active, hours_left=left, completed_hours=completed,
                                daily_plot=daily_image,
                                hourly_plot=hourly_image,
                                last=False)
@@ -133,7 +133,7 @@ class PagePreparationService:
         completed = hours_rated
 
         return render_template('dailypanel.html', judge=judge, user=username, date=chosen_date,
-                               active_hours=[active], completed_hours=completed,
+                               active_hours=[active], hour=active, completed_hours=completed,
                                daily_plot=daily_image,
                                hourly_plot=hourly_image,
                                last=True)

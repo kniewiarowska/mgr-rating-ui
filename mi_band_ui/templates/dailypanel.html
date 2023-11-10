@@ -2,32 +2,22 @@
 <html>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='image.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='progress-bar.css') }}">
-<head>
 
-</head>
 <body>
-<p>{{ user }}</p>
-<p>{{ date }}</p>
-<p>{{ judge }}</p>
-
-
 <div class="stepper-wrapper">
       {% for completed in completed_hours %}
         <div class="stepper-item completed">
             <div class="step-counter">{{completed}}</div>
-            <div class="step-name">{{completed}}</div>
         </div>
     {% endfor %}
 
     <div class="stepper-item active">
         <div class="step-counter">{{hour}}</div>
-        <div class="step-name">{{active}}</div>
     </div>
 
     {% for left in hours_left %}
         <div class="stepper-item">
             <div class="step-counter">{{left}}</div>
-            <div class="step-name">{{left}}</div>
         </div>
     {% endfor %}
 
@@ -39,17 +29,23 @@
         <img src="data:;base64,{{ daily_plot }}"/>
         <img src="data:;base64,{{ hourly_plot }}"/>
     </div>
+</div>
 
- <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=0, judge=judge, last=last)}}" method=post>
-     <input id='next_hutch' type=submit value="OK" name='action'>
- </form>
- <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=1, judge=judge, last=last)}}" method=post>
-     <input id='next_hutch2' type=submit value="ANOMALY" name='action'>
- </form>
-  <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=2, judge=judge, last=last)}}" method=post>
-     <input id='next_hutch3' type=submit value="MESSY" name='action'>
- </form>
-
+<div class="down">
+    <div class="title">
+        Data for {{user}} from {{date}}
+    </div>
+    <div class="buttons">
+        <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=0, judge=judge, last=last)}}" method=post>
+            <input class='submit' type=submit value="OK" name='action'>
+        </form>
+        <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=1, judge=judge, last=last)}}" method=post>
+            <input class='submit' type=submit value="ANOMALY" name='action'>
+        </form>
+        <form action="{{ url_for('rate', user=user, date=date, active_hour=active_hours, rate=2, judge=judge, last=last)}}" method=post>
+            <input class='submit' type=submit value="MESSY" name='action'>
+        </form>
+    </div>
 </div>
 
 </body>

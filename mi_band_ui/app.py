@@ -35,11 +35,11 @@ def prepare():
         print(datetime.now())
 
 
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(func=prepare, trigger="interval", seconds=60)
-# scheduler.start()
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=prepare, trigger="interval", seconds=3600)
+scheduler.start()
 
-#atexit.register(lambda: scheduler.shutdown())
+atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route('/index', methods=['GET', 'POST'])
