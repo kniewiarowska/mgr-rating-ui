@@ -70,6 +70,19 @@
   border-radius: 20px;
 }
 
+.arrow{
+   font-family: "Trebuchet MS", sans-serif;
+   font-size: 10px;
+   margin: auto;
+   padding-left: 10px;
+   padding-left: 10px;
+   justify:center;
+}
+
+a {
+padding-left: 5px;
+}
+
 
 .submitme {
    cursor: pointer;
