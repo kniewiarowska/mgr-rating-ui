@@ -1,5 +1,5 @@
-from mi_band_ui.repository.rate_repository import RateRepository
-from mi_band_ui.repository.util.data_util import clean_up_list
+from repository.rate_repository import RateRepository
+from repository.util.data_util import clean_up_list
 
 
 class StartPageService:

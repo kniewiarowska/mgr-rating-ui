@@ -2,7 +2,7 @@ from operator import and_
 
 from sqlalchemy import text
 
-from mi_band_ui.datamodel.models import db, HourlyStatistic, Rate
+from datamodel.models import db, HourlyStatistic, Rate
 
 
 class HourlyStatsRepository:
@@ -77,7 +77,7 @@ class HourlyStatsRepository:
             "SELECT DISTINCT hs.date, u.username" +
             " FROM hourly_statistic hs" +
             " LEFT JOIN rate r ON hs.id = r.hourly_stats_id AND r.judge = :specifed_judge " +
-            " LEFT JOIN user u ON hs.user_id = u.id " +
+            " LEFT JOIN users u ON hs.user_id = u.id " +
             " WHERE r.id IS NULL;")
 
         params = {"specifed_judge": specifed_judge}

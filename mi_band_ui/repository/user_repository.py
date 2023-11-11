@@ -1,4 +1,4 @@
-from mi_band_ui.datamodel.models import User, db
+from datamodel.models import Users, db
 
 
 class UserRepository:
@@ -8,14 +8,14 @@ class UserRepository:
 
     def read_user(self, username=None):
         if username:
-            query = self.session.query(User).filter(User.username == username)
+            query = self.session.query(Users).filter(Users.username == username)
             return query.first()
         return None
 
     def read_all(self):
-        query = self.session.query(User)
+        query = self.session.query(Users)
         return query.all()
 
     def get_usernames(self):
-        query = self.session.query(User.username)
+        query = self.session.query(Users.username)
         return query.all()

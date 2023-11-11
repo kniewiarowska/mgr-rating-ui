@@ -1,6 +1,6 @@
 import math
 
-from mi_band_ui.datamodel.models import HourlyStatistic
+from datamodel.models import HourlyStatistic
 
 
 def calculate_heart_rate(item, heart_rate_mean):

@@ -29,8 +29,8 @@ class MiBand(db.Model):
     heart_rate = Column(String(255), nullable=False)
 
 
-class User(db.Model):
-    __tablename__ = 'user'
+class Users(db.Model):
+    __tablename__ = 'users'
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     email = Column(String(50), nullable=True)
@@ -53,12 +53,12 @@ class HourlyStatistic(db.Model):
     user_id = Column(BigInteger, nullable=False)
 
     # Assuming 'User' is the related table with an 'id' field
-    user = relationship('User', foreign_keys=[user_id], lazy="joined")
+    user = relationship('Users', foreign_keys=[user_id], lazy="joined")
     image = Column(LargeBinary, nullable=True)
 
     __table_args__ = (
         UniqueConstraint('hour', 'date', 'user_id', name='hourly_statistic_user_id_fk'),
-        ForeignKeyConstraint(['user_id'], ['user.id'], name='hourly_statistic_user_id_fk')
+        ForeignKeyConstraint(['user_id'], ['users.id'], name='hourly_statistic_user_id_fk')
     )
 
 
@@ -71,11 +71,11 @@ class Daily(db.Model):
     user_id = Column(BigInteger, nullable=False)
 
     # Assuming 'User' is the related table with an 'id' field
-    user = relationship('User', foreign_keys=[user_id], lazy="joined")
+    user = relationship('Users', foreign_keys=[user_id], lazy="joined")
 
     # Define a unique constraint on the id column
     __table_args__ = (UniqueConstraint('id', name='daily_id_uindex'),
-                      ForeignKeyConstraint(['user_id'], ['user.id'], name='daily_user_id_fk'))
+                      ForeignKeyConstraint(['user_id'], ['users.id'], name='daily_user_id_fk'))
 
 
 class Rate(db.Model):

@@ -1,7 +1,7 @@
-from mi_band_ui.datamodel.models import Rate, HourlyStatistic
-from mi_band_ui.repository.daily_repository import DailyRepository
-from mi_band_ui.repository.hourly_stats_repository import HourlyStatsRepository
-from mi_band_ui.repository.rate_repository import RateRepository
+from datamodel.models import Rate, HourlyStatistic
+from repository.daily_repository import DailyRepository
+from repository.hourly_stats_repository import HourlyStatsRepository
+from repository.rate_repository import RateRepository
 
 
 class JudgePreparationService:

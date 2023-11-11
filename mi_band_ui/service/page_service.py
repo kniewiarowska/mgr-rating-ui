@@ -3,11 +3,11 @@ import logging
 
 from flask import render_template
 
-from mi_band_ui.datamodel.models import Rate
-from mi_band_ui.repository.daily_repository import DailyRepository
-from mi_band_ui.repository.hourly_stats_repository import HourlyStatsRepository
-from mi_band_ui.repository.rate_repository import RateRepository
-from mi_band_ui.repository.user_repository import UserRepository
+from datamodel.models import Rate
+from repository.daily_repository import DailyRepository
+from repository.hourly_stats_repository import HourlyStatsRepository
+from repository.rate_repository import RateRepository
+from repository.user_repository import UserRepository
 
 
 class PagePreparationService:

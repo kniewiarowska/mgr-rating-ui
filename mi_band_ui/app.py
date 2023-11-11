@@ -6,14 +6,14 @@ import matplotlib
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
-from apscheduler.triggers.interval import IntervalTrigger
+from mysql import connector
 
 import config
-from mi_band_ui.datamodel.models import db
-from mi_band_ui.service.data_preparation_service import DataPreparationService
-from mi_band_ui.service.judge_page import JudgePreparationService
-from mi_band_ui.service.page_service import PagePreparationService
-from mi_band_ui.service.start_page_service import StartPageService
+from datamodel.models import db
+from service.data_preparation_service import DataPreparationService
+from service.judge_page import JudgePreparationService
+from service.page_service import PagePreparationService
+from service.start_page_service import StartPageService
 
 matplotlib.use('Agg')
 
@@ -118,4 +118,4 @@ def rate():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port=5000)

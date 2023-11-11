@@ -1,13 +1,13 @@
 from datetime import date
 
-from mi_band_ui.datamodel.models import Daily
-from mi_band_ui.plot.plot_generator import prepare_image, prepare_plot_for_day
-from mi_band_ui.repository.daily_repository import DailyRepository
-from mi_band_ui.repository.hourly_stats_repository import HourlyStatsRepository
-from mi_band_ui.repository.miband_repository import MiBandRepository
-from mi_band_ui.repository.user_repository import UserRepository
-from mi_band_ui.repository.util.data_util import calculate_start_date, calculate_end_date, clean_up_data, clean_up_list
-from mi_band_ui.statistic import statistics_calculator
+from datamodel.models import Daily
+from plot.plot_generator import prepare_image, prepare_plot_for_day
+from repository.daily_repository import DailyRepository
+from repository.hourly_stats_repository import HourlyStatsRepository
+from repository.miband_repository import MiBandRepository
+from repository.user_repository import UserRepository
+from repository.util.data_util import calculate_start_date, calculate_end_date, clean_up_data, clean_up_list
+from statistic import statistics_calculator
 
 
 class DataPreparationService:
@@ -26,16 +26,17 @@ class DataPreparationService:
             user_id = user.id
 
             dates = dict_users_and_dates[key]
-            dates = dates.values
-            last = dates[-1]
-            for _date in dates:
-                exist = self.check_if_stats_calculated_for_day_and_user(_date[0], user_id)
-                if not exist:
-                    self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month),
-                                                         int(_date[0].year))
-                if last == _date:
-                    self.program_starts_for_user_and_day_for_last_day_hourly(user.username, int(_date[0].day), int(_date[0].month),
-                                                         int(_date[0].year))
+            if len(dates) != 0:
+                dates = dates.values
+                last = dates[-1]
+                for _date in dates:
+                    exist = self.check_if_stats_calculated_for_day_and_user(_date[0], user_id)
+                    if not exist:
+                        self.program_starts_for_user_and_day(user.username, int(_date[0].day), int(_date[0].month),
+                                                             int(_date[0].year))
+                    if last == _date:
+                        self.program_starts_for_user_and_day_for_last_day_hourly(user.username, int(_date[0].day), int(_date[0].month),
+                                                             int(_date[0].year))
 
 
     def check_if_stats_calculated_for_day_and_user(self, day, user_id):

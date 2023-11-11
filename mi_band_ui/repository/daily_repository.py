@@ -1,4 +1,4 @@
-from mi_band_ui.datamodel.models import db, Daily
+from datamodel.models import db, Daily
 
 
 class DailyRepository:

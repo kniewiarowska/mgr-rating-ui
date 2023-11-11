@@ -1,6 +1,6 @@
 from sqlite3 import IntegrityError
 
-from mi_band_ui.datamodel.models import db, Rate
+from datamodel.models import db, Rate
 
 
 class RateRepository:
